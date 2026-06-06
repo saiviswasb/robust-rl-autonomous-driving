@@ -153,12 +153,87 @@ Key observation: vehicle occlusion was more challenging than Gaussian noise beca
 
 The project page includes rollout videos for:
 
-- PPO clean driving
-- PPO under Gaussian noise
-- PPO under extreme occlusion
-- Recurrent PPO under extreme occlusion
+* PPO Clean Driving
+* PPO under Gaussian Noise
+* PPO under Extreme Occlusion
+* Recurrent PPO under Extreme Occlusion
 
 Videos are available in:
 
-```text
-docs/videos/
+`docs/videos/`
+
+---
+
+## Project Summary
+
+This project presents a comprehensive robustness evaluation of Reinforcement Learning for autonomous driving under sensor noise and partial observability. Using the Highway-Env simulator, we systematically investigated the performance of PPO and Recurrent PPO agents under multiple challenging conditions, including Gaussian observation noise, reward shaping, vehicle occlusion, extreme occlusion, and long-training validation. Experimental results demonstrated that PPO remained highly stable under noisy observations while maintaining low collision rates and consistent driving behavior. Vehicle occlusion proved to be a more challenging scenario because critical environmental information was removed from the observation space. Long-training validation further confirmed the stability and robustness of PPO under extreme conditions. Overall, the study highlights the importance of robustness evaluation in reinforcement learning and demonstrates that handling missing observations is a more critical challenge than handling additive sensor noise for autonomous driving systems.
+
+---
+
+## Repository Usage
+
+### Main Notebook
+
+The complete implementation, training procedures, evaluations, robustness studies, and result generation are contained in:
+
+`RL_Final_Project_LSTM_Robust_Autonomous_Driving.ipynb`
+
+This notebook can be executed using Google Colab or Jupyter Notebook.
+
+### Project Website
+
+The interactive project page is located in:
+
+`docs/`
+
+Open `docs/index.html` locally or deploy the `docs` folder using GitHub Pages to explore the methodology, experiments, videos, visual results, and key findings.
+
+### Results
+
+All generated figures used in the project page, report, and poster are stored in:
+
+`results/`
+
+This includes:
+
+* Reward comparison graphs
+* Collision comparison graphs
+* Noise sensitivity studies
+* Occlusion sensitivity studies
+
+### Videos
+
+Demonstration videos showing agent behavior under different driving conditions are available in:
+
+`docs/videos/`
+
+### Poster
+
+The final A1 project poster is available in:
+
+`poster/`
+
+### Report
+
+The complete project report is available in:
+
+`report/`
+
+### Reproducing Results
+
+1. Install all dependencies listed in `requirements.txt`.
+2. Open the notebook in Google Colab or Jupyter Notebook.
+3. Run all cells sequentially.
+4. Generated figures and videos can be reused for the project page, report, and poster.
+
+The notebook contains all experiments, including PPO training, Recurrent PPO training, noise sensitivity analysis, occlusion sensitivity analysis, long-training validation, and video generation.
+
+---
+
+## Final Findings
+
+* PPO demonstrated strong robustness under Gaussian observation noise.
+* Vehicle occlusion created a more challenging scenario than additive sensor noise.
+* Recurrent PPO did not consistently outperform PPO under the current training budget.
+* Long-training validation confirmed PPO stability under extreme occlusion conditions.
+* Robust autonomous driving systems require explicit handling of partial observability rather than relying solely on noise robustness.
