@@ -21,7 +21,7 @@ https://github.com/saiviswasb/robust-rl-autonomous-driving/
 ## Team Members
 
 - Sai Viswas
-- Nadini
+- Nandini
 - Kanika
 
 Institution: National Yang Ming Chiao Tung University
