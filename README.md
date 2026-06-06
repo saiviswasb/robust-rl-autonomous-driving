@@ -8,7 +8,7 @@ We evaluate PPO and Recurrent PPO under clean driving, Gaussian observation nois
 ## Project Page
 
 Project page:  
-http://127.0.0.1:5500/index.html#videos
+https://saiviswasb.github.io/robust-rl-autonomous-driving/
 
 Colab notebook:  
 https://colab.research.google.com/drive/1gJr58KqC9kCuX36MabSd4KsunIXRJ5RW?usp=sharing
