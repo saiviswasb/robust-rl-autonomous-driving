@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Robust RL for Autonomous Driving</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Inter, Arial, sans-serif;
+      background: #f4f7fb;
+      color: #0f172a;
+      line-height: 1.6;
+    }
+
+    a {
+      text-decoration: none;
+    }
+
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: rgba(15, 23, 42, 0.94);
+      backdrop-filter: blur(12px);
+      padding: 14px 8%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .navbar .logo {
+      color: #ffffff;
+      font-weight: 800;
+      font-size: 1.1rem;
+    }
+
+    .navbar a {
+      color: #dbeafe;
+      margin-left: 20px;
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, #020617, #1e3a8a, #0284c7);
+      color: white;
+      padding: 95px 8% 80px;
+      text-align: center;
+    }
+
+    .hero h1 {
+      font-size: 3rem;
+      max-width: 1100px;
+      margin: auto;
+      line-height: 1.15;
+      font-weight: 900;
+    }
+
+    .hero p {
+      margin-top: 20px;
+      font-size: 1.25rem;
+      color: #e0f2fe;
+    }
+
+    .team {
+      margin-top: 22px;
+      font-size: 1.05rem;
+      color: #ffffff;
+    }
+
+    .badges {
+      margin-top: 28px;
+    }
+
+    .badge {
+      display: inline-block;
+      background: #dbeafe;
+      color: #1e3a8a;
+      padding: 8px 16px;
+      border-radius: 999px;
+      margin: 5px;
+      font-weight: 700;
+      font-size: 0.9rem;
+    }
+
+    .buttons {
+      margin-top: 35px;
+    }
+
+    .btn {
+      display: inline-block;
+      background: white;
+      color: #0f172a;
+      padding: 12px 22px;
+      border-radius: 999px;
+      margin: 7px;
+      font-weight: 800;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+      transition: 0.25s;
+    }
+
+    .btn:hover {
+      transform: translateY(-3px);
+      background: #bfdbfe;
+    }
+
+    section {
+      padding: 70px 8%;
+    }
+
+    .section-light {
+      background: #ffffff;
+    }
+
+    .section-blue {
+      background: #eef6ff;
+    }
+
+    .section-title {
+      text-align: center;
+      font-size: 2.2rem;
+      font-weight: 900;
+      margin-bottom: 15px;
+      color: #0f172a;
+    }
+
+    .section-subtitle {
+      text-align: center;
+      max-width: 850px;
+      margin: 0 auto 40px;
+      color: #475569;
+      font-size: 1.1rem;
+    }
+
+    .content-box {
+      max-width: 1100px;
+      margin: auto;
+      background: white;
+      border-radius: 22px;
+      padding: 35px;
+      box-shadow: 0 15px 35px rgba(15, 23, 42, 0.08);
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 28px;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 25px;
+    }
+
+    .grid-4 {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 22px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 20px;
+      padding: 24px;
+      box-shadow: 0 12px 28px rgba(15, 23, 42, 0.08);
+    }
+
+    .card h3 {
+      margin-bottom: 12px;
+      color: #1e3a8a;
+      font-size: 1.25rem;
+    }
+
+    img {
+      width: 100%;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(15, 23, 42, 0.12);
+      background: white;
+    }
+
+    video {
+      width: 100%;
+      border-radius: 16px;
+      background: black;
+      box-shadow: 0 12px 30px rgba(15, 23, 42, 0.18);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      overflow: hidden;
+      border-radius: 16px;
+      font-size: 0.95rem;
+    }
+
+    th {
+      background: #0f172a;
+      color: white;
+      padding: 14px;
+      text-align: center;
+    }
+
+    td {
+      padding: 13px;
+      border-bottom: 1px solid #e5e7eb;
+      text-align: center;
+    }
+
+    tr:nth-child(even) {
+      background: #f8fafc;
+    }
+
+    .metric {
+      text-align: center;
+      padding: 25px;
+      border-radius: 18px;
+      background: linear-gradient(135deg, #ffffff, #e0f2fe);
+      box-shadow: 0 12px 25px rgba(15, 23, 42, 0.08);
+    }
+
+    .metric h3 {
+      color: #1d4ed8;
+      font-size: 2rem;
+      margin-bottom: 5px;
+    }
+
+    .metric p {
+      font-weight: 700;
+      color: #334155;
+    }
+
+    .resource-card {
+      text-align: center;
+      padding: 28px;
+      border-radius: 20px;
+      background: white;
+      box-shadow: 0 12px 28px rgba(15, 23, 42, 0.08);
+    }
+
+    .resource-card h3 {
+      color: #0f172a;
+      margin-bottom: 10px;
+    }
+
+    .resource-card a {
+      display: inline-block;
+      margin-top: 15px;
+      background: #1d4ed8;
+      color: white;
+      padding: 10px 18px;
+      border-radius: 999px;
+      font-weight: 800;
+    }
+
+    .finding {
+      border-left: 6px solid #2563eb;
+    }
+
+    .team-card {
+      text-align: center;
+      font-size: 1.1rem;
+      font-weight: 700;
+    }
+
+    footer {
+      background: #020617;
+      color: #cbd5e1;
+      text-align: center;
+      padding: 35px;
+    }
+
+    footer a {
+      color: #93c5fd;
+    }
+
+    @media (max-width: 900px) {
+      .grid-2, .grid-3, .grid-4 {
+        grid-template-columns: 1fr;
+      }
+
+      .hero h1 {
+        font-size: 2.1rem;
+      }
+
+      .navbar {
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .navbar a {
+        margin: 5px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav class="navbar">
+    <div class="logo">Robust RL Driving</div>
+    <div>
+      <a href="#abstract">Abstract</a>
+      <a href="#videos">Videos</a>
+      <a href="#method">Method</a>
+      <a href="#results">Results</a>
+      <a href="#resources">Resources</a>
+      <a href="#team">Team</a>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <h1>
+      Improving Robustness of Reinforcement Learning for Autonomous Driving Under Sensor Noise and Partial Observability
+    </h1>
+
+    <p>
+      A systematic PPO and Recurrent PPO study in highway-env under Gaussian noise,
+      vehicle occlusion, and long-training validation.
+    </p>
+
+    <div class="team">
+      <strong>Sai Viswas · Nadini · Kanika</strong><br>
+      Graduate Reinforcement Learning Final Project<br>
+      National Yang Ming Chiao Tung University
+    </div>
+
+    <div class="badges">
+      <span class="badge">Reinforcement Learning</span>
+      <span class="badge">PPO</span>
+      <span class="badge">Recurrent PPO</span>
+      <span class="badge">LSTM</span>
+      <span class="badge">Autonomous Driving</span>
+      <span class="badge">Robustness</span>
+    </div>
+
+    <div class="buttons">
+      <a class="btn" href="#" target="_blank">GitHub Repo</a>
+      <a class="btn" href="https://colab.research.google.com/drive/1gJr58KqC9kCuX36MabSd4KsunIXRJ5RW?usp=sharing" target="_blank">Colab Notebook</a>
+      <a class="btn" href="pdf/final_report.pdf" target="_blank">Final Report</a>
+      <a class="btn" href="pdf/poster.pdf" target="_blank">Poster</a>
+    </div>
+  </header>
+
+  <section id="abstract" class="section-light">
+    <h2 class="section-title">Abstract</h2>
+    <div class="content-box">
+      <p>
+        Autonomous driving agents must remain reliable when sensor readings are noisy,
+        incomplete, or partially unavailable. This project investigates the robustness
+        of reinforcement learning policies in the highway-env simulator using PPO and
+        Recurrent PPO. The study evaluates standard driving performance, Gaussian
+        observation noise, eco-driving reward shaping, strong noise, vehicle occlusion,
+        extreme occlusion, and long-training validation.
+      </p>
+      <br>
+      <p>
+        The results show that PPO remains highly stable under Gaussian observation noise,
+        while complete observation loss through vehicle occlusion creates a more meaningful
+        challenge. Recurrent PPO was introduced to test whether temporal memory improves
+        robustness under partial observability. Under the current training budget, recurrent
+        policies did not consistently outperform standard PPO, suggesting that memory-based
+        reinforcement learning requires careful tuning and longer training.
+      </p>
+    </div>
+  </section>
+
+  <section class="section-blue">
+    <h2 class="section-title">Project Overview</h2>
+    <p class="section-subtitle">
+      The project studies how reinforcement learning agents behave when autonomous driving observations become unreliable.
+    </p>
+
+    <div class="grid-4">
+      <div class="metric">
+        <h3>8+</h3>
+        <p>Core Experiments</p>
+      </div>
+      <div class="metric">
+        <h3>3</h3>
+        <p>Evaluation Metrics</p>
+      </div>
+      <div class="metric">
+        <h3>100k</h3>
+        <p>Long Validation Steps</p>
+      </div>
+      <div class="metric">
+        <h3>4</h3>
+        <p>Behavior Videos</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="videos" class="section-light">
+    <h2 class="section-title">Behavioral Demonstrations</h2>
+    <p class="section-subtitle">
+      Rollout videos demonstrate how different trained agents behave in clean, noisy, and occluded driving conditions.
+    </p>
+
+    <div class="grid-2">
+      <div class="card">
+        <h3>PPO Clean Driving</h3>
+        <video controls muted loop preload="metadata">
+          <source src="videos/01_ppo_clean_driving.mp4" type="video/mp4">
+        </video>
+        <p>Baseline PPO behavior in the standard highway environment.</p>
+      </div>
+
+      <div class="card">
+        <h3>PPO with Gaussian Noise</h3>
+        <video controls muted loop preload="metadata">
+          <source src="videos/02_PPO_Gaussian_Noise.mp4" type="video/mp4">
+        </video>
+        <p>PPO agent tested with noisy observation conditions.</p>
+      </div>
+
+      <div class="card">
+        <h3>PPO Extreme Occlusion</h3>
+        <video controls muted loop preload="metadata">
+          <source src="videos/03_ppo_extreme_occlusion.mp4" type="video/mp4">
+        </video>
+        <p>Standard PPO under 95% vehicle observation occlusion.</p>
+      </div>
+
+      <div class="card">
+        <h3>Recurrent PPO Extreme Occlusion</h3>
+        <video controls muted loop preload="metadata">
+          <source src="videos/04_recurrent_ppo_extreme_occlusion.mp4" type="video/mp4">
+        </video>
+        <p>LSTM-based recurrent policy under severe partial observability.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-blue">
+    <h2 class="section-title">Simulation Environment</h2>
+    <p class="section-subtitle">
+      Experiments are conducted in highway-env, a lightweight autonomous driving simulator for lane-changing and traffic interaction.
+    </p>
+
+    <div class="grid-2">
+      <div>
+        <img src="images/highway_env.png" alt="Highway environment">
+      </div>
+      <div class="card">
+        <h3>Environment Modifications</h3>
+        <p>
+          The standard environment was extended with Gaussian observation noise and
+          vehicle occlusion wrappers. These modifications simulate sensor uncertainty,
+          perception failure, and partial observability in autonomous driving.
+        </p>
+        <br>
+        <p>
+          The agent is evaluated using mean reward, collision rate, and average speed
+          to capture both performance and safety.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section id="method" class="section-light">
+    <h2 class="section-title">Methodology</h2>
+    <p class="section-subtitle">
+      The experimental pipeline connects environment simulation, observation corruption, policy learning, and safety evaluation.
+    </p>
+
+    <div class="content-box">
+      <img src="images/pipeline_diagram.png" alt="Methodology pipeline">
+    </div>
+  </section>
+
+  <section class="section-blue">
+    <h2 class="section-title">Experimental Setup</h2>
+
+    <div class="content-box">
+      <table>
+        <tr>
+          <th>Component</th>
+          <th>Configuration</th>
+        </tr>
+        <tr>
+          <td>Environment</td>
+          <td>highway-env</td>
+        </tr>
+        <tr>
+          <td>Algorithms</td>
+          <td>PPO and Recurrent PPO</td>
+        </tr>
+        <tr>
+          <td>Robustness Conditions</td>
+          <td>Gaussian noise, strong noise, vehicle occlusion, extreme occlusion</td>
+        </tr>
+        <tr>
+          <td>Metrics</td>
+          <td>Mean reward, collision rate, average speed</td>
+        </tr>
+        <tr>
+          <td>Validation</td>
+          <td>Short-run experiments and 100k-step long training validation</td>
+        </tr>
+      </table>
+    </div>
+  </section>
+
+  <section id="results" class="section-light">
+    <h2 class="section-title">Main Results</h2>
+    <p class="section-subtitle">
+      The experiments compare policy performance across clean driving, noisy observations, reward shaping, occlusion, and recurrent memory.
+    </p>
+
+    <div class="content-box">
+      <h3>Final Comparison Table</h3>
+      <br>
+      <table>
+        <tr>
+          <th>Experiment</th>
+          <th>Mean Reward</th>
+          <th>Collision Rate</th>
+          <th>Average Speed</th>
+        </tr>
+        <tr><td>PPO Clean</td><td>12.75</td><td>0.10</td><td>19.99</td></tr>
+        <tr><td>PPO Gaussian Noise</td><td>13.84</td><td>0.00</td><td>20.04</td></tr>
+        <tr><td>PPO Eco + Noise</td><td>14.11</td><td>0.00</td><td>20.04</td></tr>
+        <tr><td>PPO Strong Noise</td><td>14.06</td><td>0.00</td><td>20.04</td></tr>
+        <tr><td>PPO Hard Occlusion</td><td>14.09</td><td>0.00</td><td>20.09</td></tr>
+        <tr><td>Recurrent PPO Hard Occlusion</td><td>12.75</td><td>0.10</td><td>19.99</td></tr>
+        <tr><td>PPO Extreme Occlusion</td><td>14.06</td><td>0.00</td><td>20.04</td></tr>
+        <tr><td>Recurrent PPO Extreme Occlusion</td><td>14.46</td><td>0.00</td><td>20.04</td></tr>
+      </table>
+    </div>
+
+    <br><br>
+
+    <div class="grid-2">
+      <div class="card">
+        <h3>Mean Reward Comparison</h3>
+        <img src="images/reward_comparison.png" alt="Reward comparison">
+      </div>
+      <div class="card">
+        <h3>Collision Rate Comparison</h3>
+        <img src="images/collision_comparison.png" alt="Collision comparison">
+      </div>
+    </div>
+
+    <br>
+
+    <div class="card">
+      <h3>Training Learning Curves</h3>
+      <img src="images/episode_reward.png" alt="Training curves">
+    </div>
+  </section>
+
+  <section class="section-blue">
+    <h2 class="section-title">Noise Sensitivity Study</h2>
+    <p class="section-subtitle">
+      PPO remained stable across increasing Gaussian noise levels, indicating that additive noise alone was not enough to significantly degrade driving performance.
+    </p>
+
+    <div class="grid-3">
+      <div class="card">
+        <h3>Reward vs Noise</h3>
+        <img src="images/noise_reward.png" alt="Noise reward">
+      </div>
+      <div class="card">
+        <h3>Collision vs Noise</h3>
+        <img src="images/noise_collision.png" alt="Noise collision">
+      </div>
+      <div class="card">
+        <h3>Speed vs Noise</h3>
+        <img src="images/noise_speed.png" alt="Noise speed">
+      </div>
+    </div>
+  </section>
+
+  <section class="section-light">
+    <h2 class="section-title">Occlusion Sensitivity Study</h2>
+    <p class="section-subtitle">
+      Occlusion produced stronger degradation than Gaussian noise, showing that missing observations are more harmful than noisy observations.
+    </p>
+
+    <div class="grid-3">
+      <div class="card">
+        <h3>Reward vs Occlusion</h3>
+        <img src="images/occlusion_reward.png" alt="Occlusion reward">
+      </div>
+      <div class="card">
+        <h3>Collision vs Occlusion</h3>
+        <img src="images/occlusion_collision.png" alt="Occlusion collision">
+      </div>
+      <div class="card">
+        <h3>Speed vs Occlusion</h3>
+        <img src="images/occlusion_speed.png" alt="Occlusion speed">
+      </div>
+    </div>
+  </section>
+
+  <section class="section-blue">
+    <h2 class="section-title">Key Findings</h2>
+
+    <div class="grid-2">
+      <div class="card finding">
+        <h3>PPO is robust to Gaussian noise</h3>
+        <p>Reward and collision rate remained stable across different Gaussian observation noise levels.</p>
+      </div>
+
+      <div class="card finding">
+        <h3>Occlusion is more harmful</h3>
+        <p>Removing surrounding vehicle observations caused stronger degradation than additive sensor noise.</p>
+      </div>
+
+      <div class="card finding">
+        <h3>Memory did not automatically solve partial observability</h3>
+        <p>Recurrent PPO did not consistently outperform standard PPO under the current training budget.</p>
+      </div>
+
+      <div class="card finding">
+        <h3>Long training confirmed PPO stability</h3>
+        <p>The 100k-step validation showed that PPO remained stable under extreme occlusion.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="resources" class="section-light">
+    <h2 class="section-title">Project Resources</h2>
+    <p class="section-subtitle">
+      Code, notebook, final report, and poster resources for the project.
+    </p>
+
+    <div class="grid-4">
+      <div class="resource-card">
+        <h3>GitHub Repository</h3>
+        <p>Project source code and assets.</p>
+        <a href="#" target="_blank">Coming Soon</a>
+      </div>
+
+      <div class="resource-card">
+        <h3>Colab Notebook</h3>
+        <p>Full experiment notebook with outputs.</p>
+        <a href="https://colab.research.google.com/drive/1gJr58KqC9kCuX36MabSd4KsunIXRJ5RW?usp=sharing" target="_blank">Open Notebook</a>
+      </div>
+
+      <div class="resource-card">
+        <h3>Final Report</h3>
+        <p>Detailed explanation and analysis.</p>
+        <a href="pdf/final_report.pdf" target="_blank">Coming Soon</a>
+      </div>
+
+      <div class="resource-card">
+        <h3>Poster</h3>
+        <p>Final project poster.</p>
+        <a href="pdf/poster.pdf" target="_blank">Coming Soon</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="team" class="section-blue">
+    <h2 class="section-title">Team</h2>
+    <p class="section-subtitle">
+      Graduate Reinforcement Learning Final Project Team
+    </p>
+
+    <div class="grid-3">
+      <div class="card team-card">Sai Viswas</div>
+      <div class="card team-card">Nadini</div>
+      <div class="card team-card">Kanika</div>
+    </div>
+  </section>
+
+  <section class="section-light">
+    <h2 class="section-title">Conclusion</h2>
+    <div class="content-box">
+      <p>
+        This project demonstrates a complete robustness evaluation of reinforcement learning
+        for autonomous driving. The experiments show that PPO can remain stable under Gaussian
+        noise, but partial observability caused by vehicle occlusion creates a more meaningful
+        challenge. Recurrent PPO is a promising direction, but the results suggest that memory-based
+        policies require longer training and careful tuning.
+      </p>
+      <br>
+      <p>
+        Future work can extend this study with longer recurrent training, more realistic sensor
+        dropout patterns, multi-agent traffic scenarios, and larger autonomous driving simulators.
+      </p>
+    </div>
+  </section>
+
+  <footer>
+    <p>Built for the Graduate Reinforcement Learning Final Project.</p>
+    <p>Adapted from the Academic Project Page Template.</p>
+  </footer>
+
+</body>
+</html>
